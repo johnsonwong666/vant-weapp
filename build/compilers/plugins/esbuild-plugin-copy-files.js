@@ -12,7 +12,7 @@ const getAllFiles = async (selector, cwd) => {
       cwd
     });
   }
-  return ret.filter((i) => !i.includes('__test__'));
+  return ret.filter((i) => !i.includes('test'));
 };
 
 const esbuildPluginCopyFiles = (selector) => {
@@ -40,7 +40,6 @@ const esbuildPluginCopyFiles = (selector) => {
           const dirname = path.dirname(outputs[item].entryPoint);
           const outputDirname = path.dirname(item);
           const sourceDir = path.join(rootPath, dirname);
-
           getAllFiles(selector, sourceDir).then((files) => {
             files.forEach((file) => {
               const needCpFile = path.join(sourceDir, file);
@@ -49,11 +48,14 @@ const esbuildPluginCopyFiles = (selector) => {
               }
               set.add(needCpFile);
               const targetFile = path.join(rootPath, outputDirname, file);
-
               if (pathExistsSync(needCpFile)) {
                 try {
-                  fs.copySync(needCpFile, targetFile, { overwrite: true });
-
+                  if (selector === '**/*.json') {
+                    const fileContent = fs.readFileSync(needCpFile, 'utf8')
+                    fs.writeFileSync(targetFile, fileContent.replace('/example', ''), 'utf8')
+                  } else {
+                    fs.copySync(needCpFile, targetFile, { overwrite: true });
+                  }
                   // 给外层view添加hover-class,帮助UI验收使用。待删
                   // if (process.env.NODE_ENV === 'production' && selector === '**/*.wxml') {
                   //   addHoverClass(targetFile);

@@ -39,7 +39,7 @@ module.exports = () => ({
             noInterop: false
           }
         });
-        await fs.promises.writeFile(outputFile, output.code, 'utf-8');
+        await fs.promises.writeFile(outputFile, output.code.replace('@vant/icons/src/config', '../../@vant/icons/src/config'), 'utf-8');
       }, Promise.resolve());
     });
   }

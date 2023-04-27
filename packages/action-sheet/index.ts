@@ -72,6 +72,8 @@ VantComponent({
     },
 
     onClickOverlay() {
+      console.log('__buildVersion')
+      console.log('456')
       this.$emit('click-overlay');
       this.onClose();
     },

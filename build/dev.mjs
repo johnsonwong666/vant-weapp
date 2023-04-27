@@ -7,7 +7,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const gulpConfig = resolve(__dirname, './compiler.js');
 
 async function run() {
+  console.time('dev')
   await dev();
+  console.timeEnd('dev')
 
   const p = exec(`npx gulp -f ${gulpConfig} buildExample --color`);
   p.stdout.on('data', (stdout) => console.info(stdout));

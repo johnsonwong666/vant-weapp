@@ -20,7 +20,7 @@ function debounce(fn, wait) {
 }
 
 class WxTool {
-  projectPath = path.resolve(process.cwd(), 'examples', 'example-weapp');
+  projectPath = path.resolve(process.cwd(), 'example');
 
   privateKeyPath = path.resolve(this.projectPath, 'private.key');
 

@@ -7,5 +7,5 @@ module.exports = {
   esbuildPluginPostcssLess,
   esbuildPluginCopyFiles,
   esbuildPluginTime,
-  esbuildPluginSWC
+  esbuildPluginSWC,
 };

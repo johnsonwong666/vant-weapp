@@ -2,12 +2,15 @@
 const path = require('path');
 const { Command, logger } = require('@titian-design/cli');
 const esbuild = require('esbuild');
+const { replace } = require('esbuild-plugin-replace');
+const fs = require('fs-extra')
 const { dtsPlugin } = require('esbuild-plugin-d.ts');
 const { lessLoader } = require('esbuild-plugin-less');
 const glob = require('tiny-glob');
 const watch = require('watch');
 const { esbuildPluginPostcssLess, esbuildPluginCopyFiles, esbuildPluginTime, esbuildPluginSWC } = require('../plugins');
 
+const externalPackages = ['@vant/icons']
 const FILE_TYPE = {
   JS: '.js',
   TS: '.ts',
@@ -103,9 +106,7 @@ class BasicCompiler extends Command {
     const ret = await this.pickChangedFiles(changedFiles);
     if (this.tsFiles.length === 0) return null;
     const entryPoints = ret.type !== 'all' ? ret.file : this.tsFiles;
-
     this.logger.debug('compiler', 'ts build entry points: ', entryPoints);
-
     return esbuild.build({
       entryPoints,
       outdir: this.buildPath,
@@ -121,7 +122,32 @@ class BasicCompiler extends Command {
         (ret.type === 'all' || ret.type === 'wxml') && esbuildPluginCopyFiles('**/*.wxml'),
         esbuildPluginTime('ts')
       ].filter(Boolean)
-    });
+    }).then((res) => {
+      // console.log(this)
+      // console.log('src', path.join(this.config.basedir, 'node_modules/@vant/icons'))
+      const srcDir = path.join(this.config.basedir, 'node_modules/@vant/icons');
+      const destDir = path.join(this.buildPath, '@vant/icons');
+
+      const wxsSrc = path.join(this.entryPath, 'wxs')
+      const wxsDestDir = path.join(this.buildPath, 'wxs');
+      // console.log(srcDir)
+      // console.log(destDir)
+      fs.ensureDir(destDir, err => {
+        if (err) throw err;
+        fs.copy(srcDir, destDir, err => {
+          if (err) throw err;
+  
+        });
+      });
+
+      fs.ensureDir(wxsDestDir, err => {
+        if (err) throw err;
+        fs.copy(wxsSrc, wxsDestDir, err => {
+          if (err) throw err;
+      
+        });
+      });
+    })
   }
 
   async beforeInit() {
@@ -158,14 +184,13 @@ class BasicCompiler extends Command {
         filesOnly: true,
         flush: true
       })
-    ).filter((i) => !i.includes('__test__'));
+    ).filter((i) => !i.includes('test'));
 
     return files;
   }
 
   async getAllFiles() {
     const files = await this.getGlobFiles('**/*', this.entryPath);
-
     this.tsFiles = files.filter((file) => file.endsWith('.ts')).map((file) => path.resolve(this.entryPath, file));
     this.lessFiles = files.filter((file) => file.endsWith('.less')).map((file) => path.resolve(this.entryPath, file));
   }

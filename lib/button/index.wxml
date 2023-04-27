@@ -48,6 +48,7 @@
       custom-style="line-height: inherit;"
     />
     <view class="van-button__text">
+      1231231
       <slot />
     </view>
   </block>
