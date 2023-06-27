@@ -28,7 +28,7 @@ export function isBoolean(value: unknown): value is boolean {
   return typeof value === 'boolean';
 }
 
-const IMAGE_REGEXP = /\.(jpeg|jpg|gif|png|svg|webp|jfif|bmp|dpg)/i;
+const IMAGE_REGEXP = /\.(jpeg|jpg|gif|png|svg|webp|jfif|bmp|dpg|heic)/i;
 const VIDEO_REGEXP = /\.(mp4|mpg|mpeg|dat|asf|avi|rm|rmvb|mov|wmv|flv|mkv)/i;
 
 export function isImageUrl(url: string): boolean {
