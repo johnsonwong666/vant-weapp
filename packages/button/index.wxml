@@ -30,7 +30,9 @@
   bindchooseavatar="onChooseAvatar"
 >
   <block wx:if="{{ loading }}">
+    <slot name="loading" wx:if="{{useLoadingIconSlot}}">
     <van-loading
+      wx:else
       custom-class="loading-class"
       size="{{ loadingSize }}"
       type="{{ loadingType }}"
@@ -49,6 +51,7 @@
       class="van-button__icon"
       custom-style="line-height: inherit;"
     />
+    <slot name="icon" wx-else />
     <view class="van-button__text">
       <slot />
     </view>

@@ -23,6 +23,11 @@ VantComponent({
       type: String,
       value: 'van-icon',
     },
+    url: {
+      type: String,
+      value: '',
+    },
+    replace: Boolean,
     plain: Boolean,
     block: Boolean,
     round: Boolean,
@@ -32,6 +37,7 @@ VantComponent({
     disabled: Boolean,
     loadingText: String,
     customStyle: String,
+    useLoadingIconSlot: Boolean,
     loadingType: {
       type: String,
       value: 'circular',
@@ -61,7 +67,14 @@ VantComponent({
         openType,
         getUserProfileDesc,
         lang,
+        url,
+        replace,
       } = this.data;
+
+      if (url !== '') {
+        replace ? wx.redirectTo({ url }) : wx.navigateTo({ url });
+        return;
+      }
 
       if (openType === 'getUserInfo' && canIUseGetUserProfile) {
         wx.getUserProfile({

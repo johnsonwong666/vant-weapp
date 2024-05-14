@@ -128,6 +128,8 @@
 | class-prefix | 图标类名前缀，同 Icon 组件的 [class-prefix 属性](#/icon) | _string_ | `van-icon` |
 | plain | 是否为朴素按钮 | _boolean_ | `false` |
 | block | 是否为块级元素 | _boolean_ | `false` |
+| url | 点击后跳转的链接地址 | _string_ | - |
+| replace | 是否在跳转时替换当前页面历史 | _boolean_ | `false` |
 | round | 是否为圆形按钮 | _boolean_ | `false` |
 | square | 是否为方形按钮 | _boolean_ | `false` |
 | disabled | 是否禁用按钮 | _boolean_ | `false` |
@@ -148,6 +150,7 @@
 | show-message-card | 显示会话内消息卡片 | _string_ | `false` |
 | dataset | 按钮 dataset，open-type 为 `share` 时，可在 onShareAppMessage 事件的 `event.target.dataset.detail` 中看到传入的值 | _any_ | - |
 | form-type | 用于 form 组件，可选值为`submit` `reset`，点击分别会触发 form 组件的 submit/reset 事件 | _string_ | - |
+| useLoadingIconSlot | 是否自定义loading的图标 | _boolean_ | `false` |
 
 ### Events
 
